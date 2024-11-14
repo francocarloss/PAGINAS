@@ -339,11 +339,13 @@
             // Calcular rango de peso recomendado para un IMC de 18.5 a 24.9
             const minWeightKg = (18.5 * (heightM * heightM)).toFixed(1);
             const maxWeightKg = (24.9 * (heightM * heightM)).toFixed(1);
+            const minWeightLb = (minWeightKg / 0.453592).toFixed(1);
+            const maxWeightLb = (maxWeightKg / 0.453592).toFixed(1);
 
             // Calcular el peso que debería bajar (si tiene sobrepeso)
-            let weightToLose = 0;
+            let weightToLoseLb = 0;
             if (imc >= 25) {
-                weightToLose = (weightKg - maxWeightKg).toFixed(1);
+                weightToLoseLb = (weightLb - maxWeightLb).toFixed(1);
             }
 
             // Mostrar datos en la sección de información
@@ -353,8 +355,8 @@
             document.getElementById('heightOutput').innerText = `${height} cm`;
             document.getElementById('weightOutput').innerText = `${weightLb} lb (${weightKg} kg)`;
             document.getElementById('imcOutput').innerText = imc;
-            document.getElementById('recommendedWeightRange').innerText = `${minWeightKg} kg - ${maxWeightKg} kg`;
-            document.getElementById('weightToLose').innerText = weightToLose > 0 ? `${weightToLose} kg` : "N/A";
+            document.getElementById('recommendedWeightRange').innerText = `${minWeightLb} lb - ${maxWeightLb} lb`;
+            document.getElementById('weightToLose').innerText = weightToLoseLb > 0 ? `${weightToLoseLb} lb` : "N/A";
 
             // Evaluar estado basado en el IMC
             let imcStatus = "";
