@@ -297,6 +297,14 @@
                     <span>IMC</span>
                     <span id="imcOutput"></span>
                 </div>
+                <div class="info">
+                    <span>Rango de peso recomendado</span>
+                    <span id="recommendedWeightRange"></span>
+                </div>
+                <div class="info">
+                    <span>Peso que debería bajar</span>
+                    <span id="weightToLose"></span>
+                </div>
             </div>
             <div class="imc-status" id="imcStatus"></div>
         </div>
@@ -328,6 +336,16 @@
             // Calcular IMC
             const imc = (weightKg / (heightM * heightM)).toFixed(2);
 
+            // Calcular rango de peso recomendado para un IMC de 18.5 a 24.9
+            const minWeightKg = (18.5 * (heightM * heightM)).toFixed(1);
+            const maxWeightKg = (24.9 * (heightM * heightM)).toFixed(1);
+
+            // Calcular el peso que debería bajar (si tiene sobrepeso)
+            let weightToLose = 0;
+            if (imc >= 25) {
+                weightToLose = (weightKg - maxWeightKg).toFixed(1);
+            }
+
             // Mostrar datos en la sección de información
             document.getElementById('nameOutput').innerText = name;
             document.getElementById('ageOutput').innerText = age;
@@ -335,6 +353,8 @@
             document.getElementById('heightOutput').innerText = `${height} cm`;
             document.getElementById('weightOutput').innerText = `${weightLb} lb (${weightKg} kg)`;
             document.getElementById('imcOutput').innerText = imc;
+            document.getElementById('recommendedWeightRange').innerText = `${minWeightKg} kg - ${maxWeightKg} kg`;
+            document.getElementById('weightToLose').innerText = weightToLose > 0 ? `${weightToLose} kg` : "N/A";
 
             // Evaluar estado basado en el IMC
             let imcStatus = "";
