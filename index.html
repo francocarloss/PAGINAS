@@ -1,396 +1,329 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Riesgo Cardiometabólico (CCM)</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comunikids - Control de Niños</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
 
-        body {
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px;
-        }
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        text-align: center;
+      }
 
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 800px;
-            max-width: 100%;
-        }
+      h1 {
+        margin-bottom: 20px;
+      }
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #4a4a4a;
-        }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: left;
+      }
 
-        .form-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ff6600; /* Borde naranja */
+        border-radius: 4px;
+      }
 
-        label {
-            font-size: 14px;
-            color: #333;
-        }
+      input:focus {
+        outline: none;
+        border-color: #e65c00; /* tono más oscuro */
+      }
 
-        input, select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-            width: 100%;
-        }
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #ff6600; /* Botón naranja */
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 5px;
+      }
 
-        .button-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+      button:hover {
+        background-color: #e65c00; /* tono más oscuro */
+      }
 
-        .button-section button {
-            background-color: #6200ee;
-            color: #fff;
-            padding: 10px 20px;
-            border: 2px solid black;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            max-width: 300px;
-        }
+      /* Ajustes de estilo para la impresión en la mini impresora */
+      .ticket {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
 
-        .print-button {
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-        }
+        /* Centrar todo el texto y hacerlo más grande */
+        text-align: center;
+      }
 
-        .print-button:hover {
-            background-color: #218838;
-        }
+      .ticket h2 {
+        font-size: 20px; /* Tamaño de título en el ticket */
+        margin-bottom: 10px;
+      }
 
-        .table-section {
-            margin-bottom: 20px;
-        }
+      .ticket p {
+        font-size: 16px; /* Tamaño de texto en el ticket */
+        margin: 6px 0;
+      }
 
-        .table-section table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+      .hidden {
+        display: none;
+      }
 
-        .table-section th, .table-section td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
+      .print-button {
+        margin-top: 10px;
+        background-color: #007bff; /* Botón azul para imprimir */
+      }
 
-        .table-section th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
+      .print-button:hover {
+        background-color: #0056b3;
+      }
 
-        .printable-section {
-            padding: 20px;
-        }
+      .pdf-button {
+        margin-top: 10px;
+        background-color: #8a2be2; /* Botón morado para PDF */
+      }
 
-        .printable-section .logo {
-            text-align: left;
-            margin-bottom: 20px;
-        }
+      .pdf-button:hover {
+        background-color: #6a1cb5;
+      }
 
-        .printable-section .logo img {
-            max-width: 150px;
-        }
+      /* Ajustes similares para la versión imprimible (ticketPrint) */
+      .ticket-print {
+        text-align: center;
+      }
 
-        .printable-section h1 {
-            font-size: 24px;
-            text-align: left;
-            margin-bottom: 10px;
-        }
+      .ticket-print h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
 
-        .date-time {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #333;
-        }
+      .ticket-print p {
+        font-size: 16px;
+        margin: 6px 0;
+      }
 
-        .info-section {
-            margin-bottom: 20px;
+      @media print {
+        body * {
+          visibility: hidden;
         }
-
-        .info-section h2 {
-            font-size: 18px;
-            margin-bottom: 5px;
-            color: #000;
+        .ticket-print,
+        .ticket-print * {
+          visibility: visible;
         }
-
-        .info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 16px;
-            color: #000;
-            margin-bottom: 5px;
+        .ticket-print {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          border: none;
+          box-shadow: none;
+          padding: 0;
+          margin: 0;
         }
-
-        .info span {
-            width: 45%;
-            text-align: left;
-        }
-
-        .imc-status {
-            font-size: 16px;
-            color: red;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        /* Estilos para la impresión */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .printable-section, .printable-section * {
-                visibility: visible;
-            }
-            .printable-section {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Calculadora de Riesgo Cardiometabólico (CCM)</h1>
+      <h1>Comunikids - Control de Niños</h1>
+      <form id="childForm">
+        <!-- Campos para el padre -->
+        <label for="fatherFirstName">Nombre del Padre:</label>
+        <input type="text" id="fatherFirstName" placeholder="Nombre" required />
+        <input type="text" id="fatherLastName" placeholder="Apellido" required />
 
-        <!-- Tabla de rangos de IMC -->
-        <div class="table-section">
-            <table>
-                <thead>
-                    <tr>
-                        <th>IMC</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Menos de 18.5</td>
-                        <td>Bajo peso</td>
-                    </tr>
-                    <tr>
-                        <td>18.5 - 24.9</td>
-                        <td>Peso correcto</td>
-                    </tr>
-                    <tr>
-                        <td>25 - 29.9</td>
-                        <td>Sobrepeso</td>
-                    </tr>
-                    <tr>
-                        <td>30 - 34.9</td>
-                        <td>Obesidad</td>
-                    </tr>
-                    <tr>
-                        <td>35 - 39.9</td>
-                        <td>Obesidad grave</td>
-                    </tr>
-                    <tr>
-                        <td>40 o más</td>
-                        <td>Obesidad mórbida</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <!-- Campos para el hijo -->
+        <label for="childFirstName">Nombre del Hijo:</label>
+        <input type="text" id="childFirstName" placeholder="Nombre" required />
+        <input type="text" id="childLastName" placeholder="Apellido" required />
 
-        <div class="form-section">
-            <label for="name">Nombre del asegurado:</label>
-            <input type="text" id="name" placeholder="Nombre completo">
+        <button type="submit">Generar Ticket</button>
+      </form>
 
-            <label for="age">Edad:</label>
-            <input type="number" id="age" placeholder="25">
+      <!-- Botón para generar reporte en Excel (acumula todos los registros) -->
+      <button id="excelButton" onclick="exportToExcel()">Generar Reporte Excel</button>
 
-            <label for="sex">Sexo:</label>
-            <select id="sex">
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-            </select>
+      <div id="ticket" class="ticket hidden">
+        <h2>Ticket de Entrega</h2>
+        <p><strong>Nombre del Padre:</strong> <span id="ticketFatherName"></span></p>
+        <p><strong>Nombre del Hijo:</strong> <span id="ticketChildName"></span></p>
+        <p><strong>Número de Ticket:</strong> <span id="ticketNumber"></span></p>
+        <p><strong>Fecha y Hora:</strong> <span id="ticketDateTime"></span></p>
 
-            <label for="height">Altura (cm):</label>
-            <input type="number" id="height" placeholder="165">
+        <button class="print-button" onclick="printTicket()">Imprimir Ticket</button>
+        <button class="pdf-button" onclick="generatePDF()">Generar PDF</button>
+      </div>
 
-            <label for="weight">Peso (lb):</label>
-            <input type="number" id="weight" placeholder="300">
-
-            <!-- Campo opcional -->
-            <label for="waist">Circunferencia de la cintura (cm) (Opcional):</label>
-            <input type="number" id="waist" placeholder="250">
-        </div>
-
-        <div class="button-section">
-            <button onclick="calculateIMC()">Calcular IMC</button>
-        </div>
-
-        <!-- Sección imprimible -->
-        <div class="printable-section">
-            <div class="logo">
-                <img src="LogoSeguniMiniResplandeciente.png" alt="Logo de Seguros">
-            </div>
-            <h1>Calculadora de riesgo cardiometabólico (CCM)</h1>
-            <div class="date-time">
-                <span id="currentDate"></span>
-                <span id="currentTime"></span>
-            </div>
-            <h2>Conceptos básicos</h2>
-            <div class="info-section">
-                <div class="info">
-                    <span>Nombre del asegurado</span>
-                    <span id="nameOutput"></span>
-                </div>
-                <div class="info">
-                    <span>Edad actual</span>
-                    <span id="ageOutput"></span>
-                </div>
-                <div class="info">
-                    <span>Sexo</span>
-                    <span id="sexOutput"></span>
-                </div>
-                <div class="info">
-                    <span>País de contacto</span>
-                    <span>Guatemala</span>
-                </div>
-            </div>
-            <h2>Constitución</h2>
-            <div class="info-section">
-                <div class="info">
-                    <span>Altura</span>
-                    <span id="heightOutput"></span>
-                </div>
-                <div class="info">
-                    <span>Peso</span>
-                    <span id="weightOutput"></span>
-                </div>
-                <div class="info">
-                    <span>IMC</span>
-                    <span id="imcOutput"></span>
-                </div>
-                <div class="info">
-                    <span>Rango de peso recomendado</span>
-                    <span id="recommendedWeightRange"></span>
-                </div>
-                <div class="info">
-                    <span>Peso que debería bajar</span>
-                    <span id="weightToLose"></span>
-                </div>
-            </div>
-            <div class="imc-status" id="imcStatus"></div>
-        </div>
-
-        <button class="print-button" onclick="window.print()">Imprimir</button>
+      <!-- Contenido para imprimir -->
+      <div id="ticketPrint" class="ticket-print hidden">
+        <h2>Comunikids - Ticket de Entrega</h2>
+        <p><strong>Padre:</strong> <span id="printFatherName"></span></p>
+        <p><strong>Hijo:</strong> <span id="printChildName"></span></p>
+        <p><strong>Número:</strong> <span id="printTicketNumber"></span></p>
+        <p><strong>Fecha y Hora:</strong> <span id="printDateTime"></span></p>
+      </div>
     </div>
 
+    <!-- Librería jsPDF para generar PDF desde el navegador -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <script>
-        function calculateIMC() {
-            // Obtener valores de los inputs
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const sex = document.getElementById('sex').value;
-            const height = parseFloat(document.getElementById('height').value);
-            const weightLb = parseFloat(document.getElementById('weight').value);
+      let ticketCounter = 1;
+      // Arreglo para guardar todas las entradas (para Excel):
+      let entries = [];
 
-            // Validar entradas
-            if (!name || !age || !height || !weightLb || height <= 0 || weightLb <= 0) {
-                alert("Por favor, ingrese valores válidos.");
-                return;
-            }
+      // Objeto para el ticket actual (para PDF):
+      let currentTicketData = {
+        father: "",
+        child: "",
+        ticketNumber: "",
+        dateTime: ""
+      };
 
-            // Convertir peso de libras a kilogramos
-            const weightKg = (weightLb * 0.453592).toFixed(1);
+      document.getElementById("childForm").addEventListener("submit", function (event) {
+        event.preventDefault();
 
-            // Calcular altura en metros
-            const heightM = height / 100;
+        const fatherFirstName = document
+          .getElementById("fatherFirstName")
+          .value.trim();
+        const fatherLastName = document
+          .getElementById("fatherLastName")
+          .value.trim();
+        const childFirstName = document
+          .getElementById("childFirstName")
+          .value.trim();
+        const childLastName = document
+          .getElementById("childLastName")
+          .value.trim();
 
-            // Calcular IMC
-            const imc = (weightKg / (heightM * heightM)).toFixed(2);
+        if (fatherFirstName && fatherLastName && childFirstName && childLastName) {
+          const fatherFullName = fatherFirstName + " " + fatherLastName;
+          const childFullName = childFirstName + " " + childLastName;
 
-            // Calcular rango de peso recomendado para un IMC de 18.5 a 24.9
-            const minWeightKg = (18.5 * (heightM * heightM)).toFixed(1);
-            const maxWeightKg = (24.9 * (heightM * heightM)).toFixed(1);
-            const minWeightLb = (minWeightKg / 0.453592).toFixed(1);
-            const maxWeightLb = (maxWeightKg / 0.453592).toFixed(1);
+          // Obtener fecha y hora actual
+          const dateTimeNow = new Date().toLocaleString();
 
-            // Calcular el peso que debería bajar (si tiene sobrepeso)
-            let weightToLoseLb = 0;
-            if (imc >= 25) {
-                weightToLoseLb = (weightLb - maxWeightLb).toFixed(1);
-            }
+          // Mostramos datos en el ticket
+          document.getElementById("ticketFatherName").textContent = fatherFullName;
+          document.getElementById("ticketChildName").textContent = childFullName;
+          document.getElementById("ticketNumber").textContent = ticketCounter;
+          document.getElementById("ticketDateTime").textContent = dateTimeNow;
 
-            // Mostrar datos en la sección de información
-            document.getElementById('nameOutput').innerText = name;
-            document.getElementById('ageOutput').innerText = age;
-            document.getElementById('sexOutput').innerText = sex;
-            document.getElementById('heightOutput').innerText = `${height} cm`;
-            document.getElementById('weightOutput').innerText = `${weightLb} lb (${weightKg} kg)`;
-            document.getElementById('imcOutput').innerText = imc;
-            document.getElementById('recommendedWeightRange').innerText = `${minWeightLb} lb - ${maxWeightLb} lb`;
-            document.getElementById('weightToLose').innerText = weightToLoseLb > 0 ? `${weightToLoseLb} lb` : "N/A";
+          // Mostramos datos en la versión de impresión
+          document.getElementById("printFatherName").textContent = fatherFullName;
+          document.getElementById("printChildName").textContent = childFullName;
+          document.getElementById("printTicketNumber").textContent = ticketCounter;
+          document.getElementById("printDateTime").textContent = dateTimeNow;
 
-            // Evaluar estado basado en el IMC
-            let imcStatus = "";
+          document.getElementById("ticket").classList.remove("hidden");
 
-            if (imc < 18.5) {
-                imcStatus = "Bajo peso";
-            } else if (imc >= 18.5 && imc < 25) {
-                imcStatus = "Peso correcto";
-            } else if (imc >= 25 && imc < 30) {
-                imcStatus = "Sobrepeso";
-            } else if (imc >= 30 && imc < 35) {
-                imcStatus = "Obesidad";
-            } else if (imc >= 35 && imc < 40) {
-                imcStatus = "Obesidad grave";
-            } else {
-                imcStatus = "Obesidad mórbida";
-            }
+          // Guardamos en el arreglo para Excel
+          entries.push({
+            fatherFirstName,
+            fatherLastName,
+            childFirstName,
+            childLastName,
+            ticket: ticketCounter
+          });
 
-            // Mostrar estado del IMC en el área centrada, roja y en negrita
-            document.getElementById('imcStatus').innerText = `Estado: ${imcStatus}`;
+          // Guardamos datos en currentTicketData (para PDF)
+          currentTicketData.father = fatherFullName;
+          currentTicketData.child = childFullName;
+          currentTicketData.ticketNumber = ticketCounter;
+          currentTicketData.dateTime = dateTimeNow;
+
+          // Incrementamos contador
+          ticketCounter++;
+
+          // Limpiamos formulario para ingresar nuevos datos
+          document.getElementById("childForm").reset();
+        } else {
+          alert("Por favor, ingresa el nombre y apellido del padre y del hijo.");
         }
+      });
 
-        // Mostrar la fecha y hora actual
-        function updateDateTime() {
-            const now = new Date();
-            const date = now.toLocaleDateString("es-ES", { day: '2-digit', month: 'long', year: 'numeric' });
-            const time = now.toLocaleTimeString("es-ES", { hour: '2-digit', minute: '2-digit' });
+      function printTicket() {
+        document.getElementById("ticketPrint").classList.remove("hidden");
+        window.print();
+        document.getElementById("ticketPrint").classList.add("hidden");
+      }
 
-            document.getElementById('currentDate').innerText = date;
-            document.getElementById('currentTime').innerText = time;
-        }
+      // Función para exportar el reporte a Excel (CSV) con TODOS los registros
+      function exportToExcel() {
+        let csvContent =
+          "NombrePadre,ApellidoPadre,NombreHijo,ApellidoHijo,Ticket\n";
 
-        // Actualizar fecha y hora al cargar la página
-        updateDateTime();
+        entries.forEach((entry) => {
+          csvContent += [
+            entry.fatherFirstName,
+            entry.fatherLastName,
+            entry.childFirstName,
+            entry.childLastName,
+            entry.ticket
+          ].join(",") + "\n";
+        });
+
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "reporte_comunikids.csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+
+      // Función para generar PDF del ticket actual (SOLO los datos actuales)
+      function generatePDF() {
+        // Extraemos jsPDF del objeto global de la librería
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Ajustamos tamaños y posiciones para simular un ticket más grande y centrado
+        doc.setFontSize(20); 
+        doc.text("Comunikids - Ticket de Entrega", 105, 20, { align: "center" });
+
+        doc.setFontSize(14);
+        doc.text("Nombre del Padre: " + currentTicketData.father, 105, 40, {
+          align: "center"
+        });
+        doc.text("Nombre del Hijo: " + currentTicketData.child, 105, 50, {
+          align: "center"
+        });
+        doc.text("Número de Ticket: " + currentTicketData.ticketNumber, 105, 60, {
+          align: "center"
+        });
+        doc.text("Fecha y Hora: " + currentTicketData.dateTime, 105, 70, {
+          align: "center"
+        });
+
+        // Para que el nombre del archivo lleve el nombre del Hijo
+        // Reemplazamos espacios por guiones bajos para evitar problemas
+        let childNameForFile = currentTicketData.child.replace(/\s+/g, "_");
+        doc.save("Ticket_Comunikids_" + childNameForFile + ".pdf");
+      }
     </script>
-</body>
+  </body>
 </html>
