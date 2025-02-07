@@ -15,7 +15,6 @@
         align-items: center;
         height: 100vh;
       }
-
       .container {
         background-color: #fff;
         padding: 20px;
@@ -24,18 +23,15 @@
         width: 300px;
         text-align: center;
       }
-
       h1 {
         margin-bottom: 20px;
       }
-
       label {
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
         text-align: left;
       }
-
       input {
         width: 100%;
         padding: 8px;
@@ -43,12 +39,10 @@
         border: 1px solid #ff6600; /* Borde naranja */
         border-radius: 4px;
       }
-
       input:focus {
         outline: none;
         border-color: #e65c00; /* tono más oscuro */
       }
-
       button {
         width: 100%;
         padding: 10px;
@@ -59,70 +53,55 @@
         cursor: pointer;
         margin-top: 5px;
       }
-
       button:hover {
         background-color: #e65c00; /* tono más oscuro */
       }
-
-      /* Ajustes de estilo para la impresión en la mini impresora */
       .ticket {
         margin-top: 20px;
         padding: 15px;
         border: 1px solid #ccc;
         border-radius: 4px;
         background-color: #f9f9f9;
-
         /* Centrar todo el texto y hacerlo más grande */
         text-align: center;
       }
-
       .ticket h2 {
-        font-size: 20px; /* Tamaño de título en el ticket */
+        font-size: 20px; /* Título en pantalla */
         margin-bottom: 10px;
       }
-
       .ticket p {
-        font-size: 16px; /* Tamaño de texto en el ticket */
+        font-size: 16px; /* Texto en pantalla */
         margin: 6px 0;
       }
-
       .hidden {
         display: none;
       }
-
       .print-button {
         margin-top: 10px;
         background-color: #007bff; /* Botón azul para imprimir */
       }
-
       .print-button:hover {
         background-color: #0056b3;
       }
-
       .pdf-button {
         margin-top: 10px;
         background-color: #8a2be2; /* Botón morado para PDF */
       }
-
       .pdf-button:hover {
         background-color: #6a1cb5;
       }
-
       /* Ajustes similares para la versión imprimible (ticketPrint) */
       .ticket-print {
         text-align: center;
       }
-
       .ticket-print h2 {
         font-size: 20px;
         margin-bottom: 10px;
       }
-
       .ticket-print p {
         font-size: 16px;
         margin: 6px 0;
       }
-
       @media print {
         body * {
           visibility: hidden;
@@ -204,18 +183,10 @@
       document.getElementById("childForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const fatherFirstName = document
-          .getElementById("fatherFirstName")
-          .value.trim();
-        const fatherLastName = document
-          .getElementById("fatherLastName")
-          .value.trim();
-        const childFirstName = document
-          .getElementById("childFirstName")
-          .value.trim();
-        const childLastName = document
-          .getElementById("childLastName")
-          .value.trim();
+        const fatherFirstName = document.getElementById("fatherFirstName").value.trim();
+        const fatherLastName = document.getElementById("fatherLastName").value.trim();
+        const childFirstName = document.getElementById("childFirstName").value.trim();
+        const childLastName = document.getElementById("childLastName").value.trim();
 
         if (fatherFirstName && fatherLastName && childFirstName && childLastName) {
           const fatherFullName = fatherFirstName + " " + fatherLastName;
@@ -271,9 +242,7 @@
 
       // Función para exportar el reporte a Excel (CSV) con TODOS los registros
       function exportToExcel() {
-        let csvContent =
-          "NombrePadre,ApellidoPadre,NombreHijo,ApellidoHijo,Ticket\n";
-
+        let csvContent = "NombrePadre,ApellidoPadre,NombreHijo,ApellidoHijo,Ticket\n";
         entries.forEach((entry) => {
           csvContent += [
             entry.fatherFirstName,
@@ -297,44 +266,53 @@
 
       // Función para generar PDF del ticket actual (SOLO los datos actuales)
       function generatePDF() {
-        // Extraemos jsPDF del objeto global de la librería
+        // 1) Creamos el PDF en modo "landscape" (horizontal), con unidad de puntos, en papel A4
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+        const doc = new jsPDF("landscape", "pt", "a4");
 
-        // Medidas de la página PDF (en puntos, aprox 72 dpi)
-        const pageWidth = doc.internal.pageSize.getWidth();   // Ancho de la página
-        const pageHeight = doc.internal.pageSize.getHeight(); // Alto de la página
+        // 2) Obtenemos el ancho y alto total de la página
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
 
-        // Calculamos el centro de la página
+        // 3) Calculamos el centro
         const centerX = pageWidth / 2;
         const centerY = pageHeight / 2;
 
-        // Ajustamos la fuente más grande para el título
-        doc.setFontSize(26); 
-        // Subimos la posición un poco para que el título quede por arriba de la mitad
-        doc.text("Comunikids - Ticket de Entrega", centerX, centerY - 40, { align: "center" });
-
-        // Aumentamos el tamaño de letra para el resto
-        doc.setFontSize(18);
-
-        // Espaciado entre líneas
-        let lineSpacing = 12;
-
-        doc.text("Nombre del Padre: " + currentTicketData.father, centerX, centerY - 10, {
-          align: "center"
-        });
-        doc.text("Nombre del Hijo: " + currentTicketData.child, centerX, centerY + (1 * lineSpacing), {
-          align: "center"
-        });
-        doc.text("Número de Ticket: " + currentTicketData.ticketNumber, centerX, centerY + (2 * lineSpacing), {
-          align: "center"
-        });
-        doc.text("Fecha y Hora: " + currentTicketData.dateTime, centerX, centerY + (3 * lineSpacing), {
-          align: "center"
+        // 4) Título mucho más grande (por ejemplo, 32 pt)
+        doc.setFontSize(32);
+        doc.text("Comunikids - Ticket de Entrega", centerX, centerY - 70, {
+          align: "center",
         });
 
-        // El nombre del archivo llevará el nombre del Hijo
-        let childNameForFile = currentTicketData.child.replace(/\s+/g, "_");
+        // 5) Texto más grande para el resto (por ejemplo, 20 pt)
+        doc.setFontSize(20);
+
+        // Definimos espacio entre líneas
+        const lineSpacing = 40;
+        // Comenzamos un poco más abajo del título
+        let yPos = centerY - 20;
+
+        doc.text("Nombre del Padre: " + currentTicketData.father, centerX, yPos, {
+          align: "center",
+        });
+        yPos += lineSpacing;
+
+        doc.text("Nombre del Hijo: " + currentTicketData.child, centerX, yPos, {
+          align: "center",
+        });
+        yPos += lineSpacing;
+
+        doc.text("Número de Ticket: " + currentTicketData.ticketNumber, centerX, yPos, {
+          align: "center",
+        });
+        yPos += lineSpacing;
+
+        doc.text("Fecha y Hora: " + currentTicketData.dateTime, centerX, yPos, {
+          align: "center",
+        });
+
+        // 6) Nombre de archivo con el hijo
+        const childNameForFile = currentTicketData.child.replace(/\s+/g, "_");
         doc.save("Ticket_Comunikids_" + childNameForFile + ".pdf");
       }
     </script>
