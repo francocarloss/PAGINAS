@@ -1,329 +1,306 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Comunikids - Control de Niños</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comunikids - Control de Niños</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      text-align: left;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ff6600;
+      border-radius: 4px;
+    }
+    input:focus {
+      outline: none;
+      border-color: #e65c00;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff6600;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    button:hover {
+      background-color: #e65c00;
+    }
+    .ticket {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+    .ticket h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .ticket p {
+      font-size: 16px;
+      margin: 6px 0;
+    }
+    .hidden {
+      display: none;
+    }
+    .print-button {
+      margin-top: 10px;
+      background-color: #007bff;
+    }
+    .print-button:hover {
+      background-color: #0056b3;
+    }
+    .pdf-button {
+      margin-top: 10px;
+      background-color: #8a2be2;
+    }
+    .pdf-button:hover {
+      background-color: #6a1cb5;
+    }
+    .ticket-print {
+      text-align: center;
+    }
+    .ticket-print h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .ticket-print p {
+      font-size: 16px;
+      margin: 6px 0;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
       }
-
-      .container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 300px;
-        text-align: center;
+      .ticket-print,
+      .ticket-print * {
+        visibility: visible;
       }
-
-      h1 {
-        margin-bottom: 20px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        text-align: left;
-      }
-
-      input {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ff6600; /* Borde naranja */
-        border-radius: 4px;
-      }
-
-      input:focus {
-        outline: none;
-        border-color: #e65c00; /* tono más oscuro */
-      }
-
-      button {
-        width: 100%;
-        padding: 10px;
-        background-color: #ff6600; /* Botón naranja */
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 5px;
-      }
-
-      button:hover {
-        background-color: #e65c00; /* tono más oscuro */
-      }
-
-      .ticket {
-        margin-top: 20px;
-        padding: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background-color: #f9f9f9;
-        text-align: center;
-      }
-
-      .ticket h2 {
-        font-size: 20px; /* Tamaño de título en pantalla */
-        margin-bottom: 10px;
-      }
-
-      .ticket p {
-        font-size: 16px; /* Tamaño de texto en pantalla */
-        margin: 6px 0;
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      .print-button {
-        margin-top: 10px;
-        background-color: #007bff; /* Botón azul para imprimir */
-      }
-
-      .print-button:hover {
-        background-color: #0056b3;
-      }
-
-      .pdf-button {
-        margin-top: 10px;
-        background-color: #8a2be2; /* Botón morado para PDF */
-      }
-
-      .pdf-button:hover {
-        background-color: #6a1cb5;
-      }
-
       .ticket-print {
-        text-align: center;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
       }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Comunikids - Control de Niños</h1>
+    <form id="childForm">
+      <!-- Campos para el padre -->
+      <label for="fatherFirstName">Nombre del Padre:</label>
+      <input type="text" id="fatherFirstName" placeholder="Nombre" required />
+      <input type="text" id="fatherLastName" placeholder="Apellido" required />
 
-      .ticket-print h2 {
-        font-size: 20px;
-        margin-bottom: 10px;
-      }
+      <!-- Campos para el hijo -->
+      <label for="childFirstName">Nombre del Hijo:</label>
+      <input type="text" id="childFirstName" placeholder="Nombre" required />
+      <input type="text" id="childLastName" placeholder="Apellido" required />
 
-      .ticket-print p {
-        font-size: 16px;
-        margin: 6px 0;
-      }
+      <button type="submit">Generar Ticket</button>
+    </form>
 
-      @media print {
-        body * {
-          visibility: hidden;
-        }
-        .ticket-print,
-        .ticket-print * {
-          visibility: visible;
-        }
-        .ticket-print {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          border: none;
-          box-shadow: none;
-          padding: 0;
-          margin: 0;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Comunikids - Control de Niños</h1>
-      <form id="childForm">
-        <!-- Campos para el padre -->
-        <label for="fatherFirstName">Nombre del Padre:</label>
-        <input type="text" id="fatherFirstName" placeholder="Nombre" required />
-        <input type="text" id="fatherLastName" placeholder="Apellido" required />
+    <!-- Botón para generar reporte en Excel (acumula todos los registros) -->
+    <button id="excelButton" onclick="exportToExcel()">Generar Reporte Excel</button>
 
-        <!-- Campos para el hijo -->
-        <label for="childFirstName">Nombre del Hijo:</label>
-        <input type="text" id="childFirstName" placeholder="Nombre" required />
-        <input type="text" id="childLastName" placeholder="Apellido" required />
+    <div id="ticket" class="ticket hidden">
+      <h2>Ticket de Entrega</h2>
+      <p><strong>Nombre del Padre:</strong> <span id="ticketFatherName"></span></p>
+      <p><strong>Nombre del Hijo:</strong> <span id="ticketChildName"></span></p>
+      <p><strong>Número de Ticket:</strong> <span id="ticketNumber"></span></p>
+      <p><strong>Fecha y Hora:</strong> <span id="ticketDateTime"></span></p>
 
-        <button type="submit">Generar Ticket</button>
-      </form>
-
-      <!-- Botón para generar reporte en Excel (acumula todos los registros) -->
-      <button id="excelButton" onclick="exportToExcel()">Generar Reporte Excel</button>
-
-      <div id="ticket" class="ticket hidden">
-        <h2>Ticket de Entrega</h2>
-        <p><strong>Nombre del Padre:</strong> <span id="ticketFatherName"></span></p>
-        <p><strong>Nombre del Hijo:</strong> <span id="ticketChildName"></span></p>
-        <p><strong>Número de Ticket:</strong> <span id="ticketNumber"></span></p>
-        <p><strong>Fecha y Hora:</strong> <span id="ticketDateTime"></span></p>
-
-        <button class="print-button" onclick="printTicket()">Imprimir Ticket</button>
-        <button class="pdf-button" onclick="generatePDF()">Generar PDF</button>
-      </div>
-
-      <!-- Contenido para imprimir -->
-      <div id="ticketPrint" class="ticket-print hidden">
-        <h2>Comunikids - Ticket de Entrega</h2>
-        <p><strong>Padre:</strong> <span id="printFatherName"></span></p>
-        <p><strong>Hijo:</strong> <span id="printChildName"></span></p>
-        <p><strong>Número:</strong> <span id="printTicketNumber"></span></p>
-        <p><strong>Fecha y Hora:</strong> <span id="printDateTime"></span></p>
-      </div>
+      <button class="print-button" onclick="printTicket()">Imprimir Ticket</button>
+      <button class="pdf-button" onclick="generatePDF()">Generar PDF</button>
     </div>
 
-    <!-- Librería jsPDF para generar PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Contenido para imprimir -->
+    <div id="ticketPrint" class="ticket-print hidden">
+      <h2>Comunikids - Ticket de Entrega</h2>
+      <p><strong>Padre:</strong> <span id="printFatherName"></span></p>
+      <p><strong>Hijo:</strong> <span id="printChildName"></span></p>
+      <p><strong>Número:</strong> <span id="printTicketNumber"></span></p>
+      <p><strong>Fecha y Hora:</strong> <span id="printDateTime"></span></p>
+    </div>
+  </div>
 
-    <script>
-      let ticketCounter = 1;
-      let entries = []; // Para Excel
-      let currentTicketData = {
-        father: "",
-        child: "",
-        ticketNumber: "",
-        dateTime: ""
-      };
+  <!-- Librería jsPDF para generar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-      document.getElementById("childForm").addEventListener("submit", function (event) {
-        event.preventDefault();
+  <script>
+    let ticketCounter = 1;
+    let entries = []; // Para Excel
+    let currentTicketData = {
+      father: "",
+      child: "",
+      ticketNumber: "",
+      dateTime: ""
+    };
 
-        const fatherFirstName = document.getElementById("fatherFirstName").value.trim();
-        const fatherLastName = document.getElementById("fatherLastName").value.trim();
-        const childFirstName = document.getElementById("childFirstName").value.trim();
-        const childLastName = document.getElementById("childLastName").value.trim();
+    document.getElementById("childForm").addEventListener("submit", function (event) {
+      event.preventDefault();
 
-        if (fatherFirstName && fatherLastName && childFirstName && childLastName) {
-          const fatherFullName = fatherFirstName + " " + fatherLastName;
-          const childFullName = childFirstName + " " + childLastName;
-          const dateTimeNow = new Date().toLocaleString();
+      const fatherFirstName = document.getElementById("fatherFirstName").value.trim();
+      const fatherLastName = document.getElementById("fatherLastName").value.trim();
+      const childFirstName = document.getElementById("childFirstName").value.trim();
+      const childLastName = document.getElementById("childLastName").value.trim();
 
-          // Muestra datos en pantalla
-          document.getElementById("ticketFatherName").textContent = fatherFullName;
-          document.getElementById("ticketChildName").textContent = childFullName;
-          document.getElementById("ticketNumber").textContent = ticketCounter;
-          document.getElementById("ticketDateTime").textContent = dateTimeNow;
-          document.getElementById("ticket").classList.remove("hidden");
+      if (fatherFirstName && fatherLastName && childFirstName && childLastName) {
+        const fatherFullName = fatherFirstName + " " + fatherLastName;
+        const childFullName = childFirstName + " " + childLastName;
+        const dateTimeNow = new Date().toLocaleString();
 
-          // Muestra datos en impresión
-          document.getElementById("printFatherName").textContent = fatherFullName;
-          document.getElementById("printChildName").textContent = childFullName;
-          document.getElementById("printTicketNumber").textContent = ticketCounter;
-          document.getElementById("printDateTime").textContent = dateTimeNow;
+        // Muestra datos en pantalla
+        document.getElementById("ticketFatherName").textContent = fatherFullName;
+        document.getElementById("ticketChildName").textContent = childFullName;
+        document.getElementById("ticketNumber").textContent = ticketCounter;
+        document.getElementById("ticketDateTime").textContent = dateTimeNow;
+        document.getElementById("ticket").classList.remove("hidden");
 
-          // Guarda para Excel
-          entries.push({
-            fatherFirstName,
-            fatherLastName,
-            childFirstName,
-            childLastName,
-            ticket: ticketCounter
-          });
+        // Muestra datos en impresión
+        document.getElementById("printFatherName").textContent = fatherFullName;
+        document.getElementById("printChildName").textContent = childFullName;
+        document.getElementById("printTicketNumber").textContent = ticketCounter;
+        document.getElementById("printDateTime").textContent = dateTimeNow;
 
-          // Guarda para PDF
-          currentTicketData.father = fatherFullName;
-          currentTicketData.child = childFullName;
-          currentTicketData.ticketNumber = ticketCounter;
-          currentTicketData.dateTime = dateTimeNow;
+        // Guarda para Excel
+        entries.push({
+          fatherFirstName,
+          fatherLastName,
+          childFirstName,
+          childLastName,
+          ticket: ticketCounter
+        });
 
-          ticketCounter++;
-          document.getElementById("childForm").reset();
-        } else {
-          alert("Por favor, ingresa el nombre y apellido del padre y del hijo.");
-        }
+        // Guarda para PDF
+        currentTicketData.father = fatherFullName;
+        currentTicketData.child = childFullName;
+        currentTicketData.ticketNumber = ticketCounter;
+        currentTicketData.dateTime = dateTimeNow;
+
+        ticketCounter++;
+        document.getElementById("childForm").reset();
+      } else {
+        alert("Por favor, ingresa el nombre y apellido del padre y del hijo.");
+      }
+    });
+
+    function printTicket() {
+      document.getElementById("ticketPrint").classList.remove("hidden");
+      window.print();
+      document.getElementById("ticketPrint").classList.add("hidden");
+    }
+
+    function exportToExcel() {
+      let csvContent = "NombrePadre,ApellidoPadre,NombreHijo,ApellidoHijo,Ticket\n";
+      entries.forEach((entry) => {
+        csvContent += [
+          entry.fatherFirstName,
+          entry.fatherLastName,
+          entry.childFirstName,
+          entry.childLastName,
+          entry.ticket
+        ].join(",") + "\n";
+      });
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "reporte_comunikids.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    // Generar PDF 58mm x 80mm, usando splitTextToSize para evitar cortes
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+
+      // Formato 58 mm x 80 mm, unidad en milímetros
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: [58, 80]
       });
 
-      function printTicket() {
-        document.getElementById("ticketPrint").classList.remove("hidden");
-        window.print();
-        document.getElementById("ticketPrint").classList.add("hidden");
+      const pageWidth = doc.internal.pageSize.getWidth();   // 58 mm
+      const pageHeight = doc.internal.pageSize.getHeight(); // 80 mm
+
+      // Coordenadas de inicio
+      let yPos = 10; // un poco debajo del borde superior
+      const centerX = pageWidth / 2;
+
+      // Título
+      doc.setFontSize(14);
+      // Usamos splitTextToSize para evitar recorte
+      const title = doc.splitTextToSize("Comunikids - Ticket de Entrega", pageWidth - 8);
+      // Imprimimos el título centrado
+      title.forEach((line, index) => {
+        doc.text(line, centerX, yPos + (index * 6), { align: "center" });
+      });
+      // Ajustamos yPos según las líneas
+      yPos += (title.length * 6) + 6;
+
+      // Fuente más pequeña para detalles
+      doc.setFontSize(12);
+
+      // Función auxiliar para imprimir una línea centrada
+      function printCenterLine(text) {
+        const lines = doc.splitTextToSize(text, pageWidth - 8);
+        lines.forEach((line, i) => {
+          doc.text(line, centerX, yPos + (i * 5), { align: "center" });
+        });
+        yPos += (lines.length * 5) + 4; // Espacio tras cada bloque
       }
 
-      function exportToExcel() {
-        let csvContent = "NombrePadre,ApellidoPadre,NombreHijo,ApellidoHijo,Ticket\n";
-        entries.forEach((entry) => {
-          csvContent += [
-            entry.fatherFirstName,
-            entry.fatherLastName,
-            entry.childFirstName,
-            entry.childLastName,
-            entry.ticket
-          ].join(",") + "\n";
-        });
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "reporte_comunikids.csv";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
+      printCenterLine("Nombre del Padre: " + currentTicketData.father);
+      printCenterLine("Nombre del Hijo: " + currentTicketData.child);
+      printCenterLine("Número de Ticket: " + currentTicketData.ticketNumber);
+      printCenterLine("Fecha y Hora: " + currentTicketData.dateTime);
 
-      // Generar PDF en formato 58mm x 80mm
-      function generatePDF() {
-        const { jsPDF } = window.jspdf;
-
-        // Crea el PDF en modo retrato (portrait),
-        //  unidad milímetros (mm), formato [58mm x 80mm]
-        const doc = new jsPDF({
-          orientation: "portrait",
-          unit: "mm",
-          format: [58, 80]
-        });
-
-        // Obtiene ancho/alto de la página
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const pageHeight = doc.internal.pageSize.getHeight();
-
-        // Calcula centro
-        const centerX = pageWidth / 2;
-        const centerY = pageHeight / 2;
-
-        // Título con fuente grande
-        doc.setFontSize(16);
-        doc.text("Comunikids - Ticket de Entrega", centerX, centerY - 20, {
-          align: "center"
-        });
-
-        // Resto del texto (un poco más pequeño)
-        doc.setFontSize(12);
-        let lineSpacing = 8;
-        let yPos = centerY - 5;
-
-        doc.text("Nombre del Padre: " + currentTicketData.father, centerX, yPos, {
-          align: "center"
-        });
-        yPos += lineSpacing;
-
-        doc.text("Nombre del Hijo: " + currentTicketData.child, centerX, yPos, {
-          align: "center"
-        });
-        yPos += lineSpacing;
-
-        doc.text("Número de Ticket: " + currentTicketData.ticketNumber, centerX, yPos, {
-          align: "center"
-        });
-        yPos += lineSpacing;
-
-        doc.text("Fecha y Hora: " + currentTicketData.dateTime, centerX, yPos, {
-          align: "center"
-        });
-
-        // Archivo con nombre del hijo
-        const childNameForFile = currentTicketData.child.replace(/\s+/g, "_");
-        doc.save("Ticket_Comunikids_" + childNameForFile + ".pdf");
-      }
-    </script>
-  </body>
+      // Nombre de archivo con el nombre del hijo
+      const childNameForFile = currentTicketData.child.replace(/\s+/g, "_");
+      doc.save("Ticket_Comunikids_" + childNameForFile + ".pdf");
+    }
+  </script>
+</body>
 </html>
