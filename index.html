@@ -301,26 +301,39 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Ajustamos tamaños y posiciones para simular un ticket más grande y centrado
-        doc.setFontSize(20); 
-        doc.text("Comunikids - Ticket de Entrega", 105, 20, { align: "center" });
+        // Medidas de la página PDF (en puntos, aprox 72 dpi)
+        const pageWidth = doc.internal.pageSize.getWidth();   // Ancho de la página
+        const pageHeight = doc.internal.pageSize.getHeight(); // Alto de la página
 
-        doc.setFontSize(14);
-        doc.text("Nombre del Padre: " + currentTicketData.father, 105, 40, {
+        // Calculamos el centro de la página
+        const centerX = pageWidth / 2;
+        const centerY = pageHeight / 2;
+
+        // Ajustamos la fuente más grande para el título
+        doc.setFontSize(26); 
+        // Subimos la posición un poco para que el título quede por arriba de la mitad
+        doc.text("Comunikids - Ticket de Entrega", centerX, centerY - 40, { align: "center" });
+
+        // Aumentamos el tamaño de letra para el resto
+        doc.setFontSize(18);
+
+        // Espaciado entre líneas
+        let lineSpacing = 12;
+
+        doc.text("Nombre del Padre: " + currentTicketData.father, centerX, centerY - 10, {
           align: "center"
         });
-        doc.text("Nombre del Hijo: " + currentTicketData.child, 105, 50, {
+        doc.text("Nombre del Hijo: " + currentTicketData.child, centerX, centerY + (1 * lineSpacing), {
           align: "center"
         });
-        doc.text("Número de Ticket: " + currentTicketData.ticketNumber, 105, 60, {
+        doc.text("Número de Ticket: " + currentTicketData.ticketNumber, centerX, centerY + (2 * lineSpacing), {
           align: "center"
         });
-        doc.text("Fecha y Hora: " + currentTicketData.dateTime, 105, 70, {
+        doc.text("Fecha y Hora: " + currentTicketData.dateTime, centerX, centerY + (3 * lineSpacing), {
           align: "center"
         });
 
-        // Para que el nombre del archivo lleve el nombre del Hijo
-        // Reemplazamos espacios por guiones bajos para evitar problemas
+        // El nombre del archivo llevará el nombre del Hijo
         let childNameForFile = currentTicketData.child.replace(/\s+/g, "_");
         doc.save("Ticket_Comunikids_" + childNameForFile + ".pdf");
       }
